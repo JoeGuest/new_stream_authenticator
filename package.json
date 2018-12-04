@@ -1,0 +1,19 @@
+{
+  "name": "new_stream_authenticator",
+  "version": "1.0.0",
+  "description": "API that provides a simple true/false response to provided user ID",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoeGuest/new_stream_authenticator.git"
+  },
+  "author": "JoeGuest",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoeGuest/new_stream_authenticator/issues"
+  },
+  "homepage": "https://github.com/JoeGuest/new_stream_authenticator#readme"
+}
