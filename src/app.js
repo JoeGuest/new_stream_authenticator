@@ -1,12 +1,13 @@
 import express from 'express';
+import authenticated from './authenticated';
 
 const app = express();
 
 app.get('/authenticate/:userId', (req, res) => {
-  const authenticated = userId => (userId === '12345');
+  const userAuthenticated = authenticated(req.params.userId);
 
   res.status(200).send({
-    authenticated: authenticated(req.params.userId),
+    authenticated: userAuthenticated,
     userId: req.params.userId,
   });
 });
