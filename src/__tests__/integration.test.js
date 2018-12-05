@@ -13,7 +13,12 @@ describe('get /authenticate/:userId', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test('responds with body "authenticated: true"', () => {
-    expect(response.body).toEqual({ authenticated: true });
+  test('responds with expected body', () => {
+    const expectedBody = {
+      authenticated: true,
+      userId: '12345'
+    }
+
+    expect(response.body).toEqual(expectedBody);
   });
 });
