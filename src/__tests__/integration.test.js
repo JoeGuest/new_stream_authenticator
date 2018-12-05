@@ -1,21 +1,24 @@
 import request from 'supertest';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import mockUserStatsService from '../__mocks__/mockUserStatsService';
 
 import app from '../app';
 
 describe('get /authenticate/:userId', () => {
   let response;
+  let status;
   let userId;
+  let userStreams;
 
   const authenticateRequest = () => request(app).get(`/authenticate/${userId}`);
 
   describe('user is able to authenticate new stream', () => {
     beforeEach(async () => {
-      const mockedAxios = new MockAdapter(axios);
-      mockedAxios.onGet('https://userstatsservice.com/12345/streams').reply(200, { userId: 12345, activeStreams: 2 });
-
+      status = 200;
       userId = 12345;
+      userStreams = 2;
+
+      mockUserStatsService(status, userId, userStreams);
+
       response = await authenticateRequest();
     });
 
@@ -35,10 +38,12 @@ describe('get /authenticate/:userId', () => {
 
   describe('user is unable to authenticate new stream', () => {
     beforeEach(async () => {
-      const mockedAxios = new MockAdapter(axios);
-      mockedAxios.onGet('https://userstatsservice.com/12345/streams').reply(200, { userId: 23456, activeStreams: 3 });
-
+      status = 200;
       userId = 23456;
+      userStreams = 3;
+
+      mockUserStatsService(status, userId, userStreams);
+
       response = await authenticateRequest();
     });
 

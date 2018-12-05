@@ -1,6 +1,5 @@
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 import authenticated from '../authenticated';
+import mockUserStatsService from '../__mocks__/mockUserStatsService';
 
 describe('authenticated', () => {
   test('throws error with message for unsuccessful users', async () => {
@@ -13,10 +12,12 @@ describe('authenticated', () => {
     }
   });
 
-  test.only('returns successful response for users able to initialize a new stream', async () => {
-    const mockedAxios = new MockAdapter(axios);
+  test('returns successful response for users able to initialize a new stream', async () => {
+    const status = 200;
+    const userId = 12345;
+    const userStreams = 2;
 
-    mockedAxios.onGet('https://userstatsservice.com/12345/streams').reply(200, { userId: 12345, activeStreams: 2 });
+    mockUserStatsService(status, userId, userStreams);
 
     const userSuccessful = await authenticated('12345');
 
