@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/JoeGuest/new_stream_authenticator#readme",
   "devDependencies": {
+    "axios-mock-adapter": "^1.15.0",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -26,6 +27,7 @@
     "supertest": "^3.3.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "express": "^4.16.4",

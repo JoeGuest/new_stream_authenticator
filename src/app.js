@@ -18,11 +18,11 @@ const unsuccessfulResponse = (res, userId, message) => {
   });
 };
 
-app.get('/authenticate/:userId', (req, res) => {
+app.get('/authenticate/:userId', async (req, res) => {
   const { params: { userId } } = req;
 
   try {
-    authenticated(userId);
+    await authenticated(userId);
     successfulResponse(res, userId);
   } catch (error) {
     unsuccessfulResponse(res, userId, error.message);
