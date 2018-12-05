@@ -10,20 +10,22 @@ const successfulResponse = (res, userId) => {
   });
 };
 
-const unsuccessfulResponse = (res, userId) => {
+const unsuccessfulResponse = (res, userId, message) => {
   res.status(401).send({
     authenticated: false,
     userId,
-    message: 'max_stream_limit_reached',
+    message,
   });
 };
 
 app.get('/authenticate/:userId', (req, res) => {
+  const { params: { userId } } = req;
+
   try {
-    authenticated(req.params.userId);
-    successfulResponse(res, req.params.userId);
+    authenticated(userId);
+    successfulResponse(res, userId);
   } catch (error) {
-    unsuccessfulResponse(res, req.params.userId);
+    unsuccessfulResponse(res, userId, error.message);
   }
 });
 
