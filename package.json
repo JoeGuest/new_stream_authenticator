@@ -4,7 +4,9 @@
   "description": "API that provides a simple true/false response to provided user ID",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "lint": "eslint . --fix",
+    "test": "jest --watch",
+    "start": "nodemon server.js --exec babel-node --"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,18 @@
   "bugs": {
     "url": "https://github.com/JoeGuest/new_stream_authenticator/issues"
   },
-  "homepage": "https://github.com/JoeGuest/new_stream_authenticator#readme"
+  "homepage": "https://github.com/JoeGuest/new_stream_authenticator#readme",
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.7"
+  }
 }
