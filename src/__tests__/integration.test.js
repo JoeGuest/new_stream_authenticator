@@ -3,22 +3,47 @@ import app from '../app';
 
 describe('get /authenticate/:userId', () => {
   let response;
-  const userId = 12345;
+  let userId;
 
-  beforeEach(async () => {
-    response = await request(app).get(`/authenticate/${userId}`);
-  });
+  const authenticateRequest = () => request(app).get(`/authenticate/${userId}`);
 
-  test('responds with status 200', () => {
+  test('responds with status 200', async () => {
+    userId = 12345;
+
+    response = await authenticateRequest();
+
     expect(response.statusCode).toBe(200);
   });
 
-  test('responds with expected body', () => {
-    const expectedBody = {
-      authenticated: true,
-      userId: '12345'
-    }
+  describe('user is able to authenticate new stream', () => {
+    beforeEach(async () => {
+      userId = 12345;
+      response = await authenticateRequest();
+    });
 
-    expect(response.body).toEqual(expectedBody);
+    test('responds with success body', () => {
+      const successBody = {
+        authenticated: true,
+        userId: '12345',
+      };
+
+      expect(response.body).toEqual(successBody);
+    });
+  });
+
+  describe('user is unable to authenticate new stream', () => {
+    beforeEach(async () => {
+      userId = 23456;
+      response = await authenticateRequest();
+    });
+
+    test('responds with failure body', () => {
+      const failureBody = {
+        authenticated: false,
+        userId: '23456',
+      };
+
+      expect(response.body).toEqual(failureBody);
+    });
   });
 });
