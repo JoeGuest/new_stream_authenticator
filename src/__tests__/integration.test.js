@@ -7,18 +7,14 @@ describe('get /authenticate/:userId', () => {
 
   const authenticateRequest = () => request(app).get(`/authenticate/${userId}`);
 
-  test('responds with status 200', async () => {
-    userId = 12345;
-
-    response = await authenticateRequest();
-
-    expect(response.statusCode).toBe(200);
-  });
-
   describe('user is able to authenticate new stream', () => {
     beforeEach(async () => {
       userId = 12345;
       response = await authenticateRequest();
+    });
+
+    test('responds with status 200', () => {
+      expect(response.statusCode).toBe(200);
     });
 
     test('responds with success body', () => {
@@ -37,10 +33,15 @@ describe('get /authenticate/:userId', () => {
       response = await authenticateRequest();
     });
 
+    test('responds with status 401 unauthorized', () => {
+      expect(response.statusCode).toBe(401);
+    });
+
     test('responds with failure body', () => {
       const failureBody = {
         authenticated: false,
         userId: '23456',
+        message: 'max_stream_limit_reached',
       };
 
       expect(response.body).toEqual(failureBody);

@@ -7,9 +7,7 @@ describe('authenticated', () => {
     expect(userSuccessful).toEqual(true);
   });
 
-  test('returns false for unsuccessful users', () => {
-    const userUnsuccessful = authenticated('23456');
-
-    expect(userUnsuccessful).toEqual(false);
+  test('returns error with message for unsuccessful users', () => {
+    expect(() => authenticated('23456')).toThrow(Error('max_stream_limit_reached'));
   });
 });
