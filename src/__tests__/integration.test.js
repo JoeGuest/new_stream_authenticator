@@ -1,11 +1,12 @@
 import request from 'supertest';
-import app from './app';
+import app from '../app';
 
-describe('get /authenticate', () => {
+describe('get /authenticate/:userId', () => {
   let response;
+  const userId = 12345;
 
   beforeEach(async () => {
-    response = await request(app).get('/authenticate');
+    response = await request(app).get(`/authenticate/${userId}`);
   });
 
   test('responds with status 200', () => {
