@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 const mockedAxios = new MockAdapter(axios);
 
 const mockUserStatsService = (status, userId, activeStreams) => {
-  mockedAxios.onGet('https://userstatsservice.com/12345/streams')
+  mockedAxios.onGet(`https://userstatsservice.com/${userId}/streams`)
     .reply(status, { userId, activeStreams });
 };
 

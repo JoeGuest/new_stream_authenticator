@@ -55,7 +55,7 @@ describe('get /authenticate/:userId', () => {
       const failureBody = {
         authenticated: false,
         userId: '23456',
-        message: 'max_stream_limit_reached',
+        message: 'Max stream limit reached',
       };
 
       expect(response.body).toEqual(failureBody);
