@@ -1,13 +1,13 @@
-import authenticated from '../authenticated';
-import mockUserStatsService from '../__mocks__/mockUserStatsService';
-import mockBusinessRulesService from '../__mocks__/mockBusinessRulesService';
+import authenticationService from '../authenticationService';
+import mockUserStatsService from '../../__mocks__/mockUserStatsService';
+import mockBusinessRulesService from '../../__mocks__/mockBusinessRulesService';
 
-describe('authenticated', () => {
+describe('authenticationService', () => {
   test('throws error for axios request failures', async () => {
     expect.assertions(1);
 
     try {
-      await authenticated('12345');
+      await authenticationService('12345');
     } catch (error) {
       expect(error).toEqual(Error('Request failed with status code 404'));
     }
@@ -22,7 +22,7 @@ describe('authenticated', () => {
     mockUserStatsService(status, userId, userStreams);
     mockBusinessRulesService(status, userId, permittedStreams);
 
-    const userSuccessful = await authenticated('12345');
+    const userSuccessful = await authenticationService('12345');
 
     expect(userSuccessful).toEqual({ userId: 12345, activeStreams: 2 });
   });
@@ -37,7 +37,7 @@ describe('authenticated', () => {
     mockBusinessRulesService(status, userId, permittedStreams);
 
     try {
-      await authenticated('23456');
+      await authenticationService('23456');
     } catch (error) {
       expect(error).toEqual(Error('Max stream limit reached'));
     }

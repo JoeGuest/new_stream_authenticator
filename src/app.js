@@ -1,5 +1,5 @@
 import express from 'express';
-import authenticated from './authenticated';
+import authenticationService from './services/authenticationService';
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.get('/authenticate/:userId', async (req, res) => {
   const { params: { userId } } = req;
 
   try {
-    await authenticated(userId);
+    await authenticationService(userId);
     successfulResponse(res, userId);
   } catch (error) {
     unsuccessfulResponse(res, userId, error.message);
