@@ -1,6 +1,6 @@
 import request from 'supertest';
-import mockUserStatsServiceConnector from '../__mocks__/mockUserStatsServiceConnector';
-import mockBusinessRulesServiceConnector from '../__mocks__/mockBusinessRulesServiceConnector';
+import mockUserStatsServiceRequest from '../__mocks__/mockUserStatsServiceRequest';
+import mockBusinessRulesServiceRequest from '../__mocks__/mockBusinessRulesServiceRequest';
 
 import app from '../app';
 
@@ -20,8 +20,8 @@ describe('get /authenticate/:userId', () => {
       userStreams = 2;
       permittedStreams = 3;
 
-      mockUserStatsServiceConnector(status, userId, userStreams);
-      mockBusinessRulesServiceConnector(status, userId, permittedStreams);
+      mockUserStatsServiceRequest(status, userId, userStreams);
+      mockBusinessRulesServiceRequest(status, userId, permittedStreams);
 
       response = await authenticateRequest();
     });
@@ -47,8 +47,8 @@ describe('get /authenticate/:userId', () => {
       userStreams = 3;
       permittedStreams = 3;
 
-      mockUserStatsServiceConnector(status, userId, userStreams);
-      mockBusinessRulesServiceConnector(status, userId, permittedStreams);
+      mockUserStatsServiceRequest(status, userId, userStreams);
+      mockBusinessRulesServiceRequest(status, userId, permittedStreams);
 
       response = await authenticateRequest();
     });

@@ -1,9 +1,9 @@
 import authenticationService from '../authenticationService';
-import userStatsServiceResponse from '../../connectors/userStatsServiceConnector';
-import businessRulesServiceResponse from '../../connectors/businessRulesServiceConnector';
+import userStatsServiceRequest from '../../requests/userStatsServiceRequest';
+import businessRulesServiceRequest from '../../requests/businessRulesServiceRequest';
 
-jest.mock('../../connectors/userStatsServiceConnector');
-jest.mock('../../connectors/businessRulesServiceConnector');
+jest.mock('../../requests/userStatsServiceRequest');
+jest.mock('../../requests/businessRulesServiceRequest');
 
 describe('authenticationService', () => {
   let userId;
@@ -16,8 +16,8 @@ describe('authenticationService', () => {
 
     expect.assertions(1);
 
-    userStatsServiceResponse.mockImplementation(() => { throw new Error('Request failed with status code 404'); });
-    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
+    userStatsServiceRequest.mockImplementation(() => { throw new Error('Request failed with status code 404'); });
+    businessRulesServiceRequest.mockResolvedValue({ data: { userId, permittedStreams } });
 
     try {
       await authenticationService('12345');
@@ -31,8 +31,8 @@ describe('authenticationService', () => {
     userStreams = 2;
     permittedStreams = 3;
 
-    userStatsServiceResponse.mockResolvedValue({ data: { userId, userStreams } });
-    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
+    userStatsServiceRequest.mockResolvedValue({ data: { userId, userStreams } });
+    businessRulesServiceRequest.mockResolvedValue({ data: { userId, permittedStreams } });
 
     const userSuccessful = await authenticationService('12345');
 
@@ -44,8 +44,8 @@ describe('authenticationService', () => {
     userStreams = 3;
     permittedStreams = 3;
 
-    userStatsServiceResponse.mockResolvedValue({ data: { userId, userStreams } });
-    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
+    userStatsServiceRequest.mockResolvedValue({ data: { userId, userStreams } });
+    businessRulesServiceRequest.mockResolvedValue({ data: { userId, permittedStreams } });
 
     try {
       await authenticationService('23456');
@@ -54,17 +54,31 @@ describe('authenticationService', () => {
     }
   });
 
-  test('calls userStatsServiceResponse and businessRulesServiceResponse with userId', async () => {
+  test('calls userStatsServiceRequest and businessRulesServiceRequest with userId', async () => {
     userId = 12345;
     userStreams = 2;
     permittedStreams = 3;
 
-    userStatsServiceResponse.mockResolvedValue({ data: { userId, userStreams } });
-    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
+    userStatsServiceRequest.mockResolvedValue({ data: { userId, userStreams } });
+    businessRulesServiceRequest.mockResolvedValue({ data: { userId, permittedStreams } });
 
     await authenticationService('12345');
 
-    expect(userStatsServiceResponse).toHaveBeenCalledWith('12345');
-    expect(businessRulesServiceResponse).toHaveBeenCalledWith('12345');
+    expect(userStatsServiceRequest).toHaveBeenCalledWith('12345');
+    expect(businessRulesServiceRequest).toHaveBeenCalledWith('12345');
+  });
+
+  test('returns successful response for demo user 123', async () => {
+    const userSuccessful = await authenticationService('123');
+
+    expect(userSuccessful).toEqual({ userId: '123', authenticated: true });
+  });
+
+  test('returns error for demo user 987', async () => {
+    try {
+      await authenticationService('987');
+    } catch (error) {
+      expect(error).toEqual(Error('Max stream limit reached'));
+    }
   });
 });
