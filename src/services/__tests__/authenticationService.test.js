@@ -1,10 +1,23 @@
 import authenticationService from '../authenticationService';
-import mockUserStatsServiceConnector from '../../__mocks__/mockUserStatsServiceConnector';
-import mockBusinessRulesServiceConnector from '../../__mocks__/mockBusinessRulesServiceConnector';
+import userStatsServiceResponse from '../../connectors/userStatsServiceConnector';
+import businessRulesServiceResponse from '../../connectors/businessRulesServiceConnector';
+
+jest.mock('../../connectors/userStatsServiceConnector');
+jest.mock('../../connectors/businessRulesServiceConnector');
 
 describe('authenticationService', () => {
+  let userId;
+  let userStreams;
+  let permittedStreams;
+
   test('throws error for axios request failures', async () => {
+    userId = 12345;
+    permittedStreams = 3;
+
     expect.assertions(1);
+
+    userStatsServiceResponse.mockImplementation(() => { throw new Error('Request failed with status code 404'); });
+    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
 
     try {
       await authenticationService('12345');
@@ -14,32 +27,44 @@ describe('authenticationService', () => {
   });
 
   test('returns successful response for users able to initialize a new stream', async () => {
-    const status = 200;
-    const userId = 12345;
-    const userStreams = 2;
-    const permittedStreams = 3;
+    userId = 12345;
+    userStreams = 2;
+    permittedStreams = 3;
 
-    mockUserStatsServiceConnector(status, userId, userStreams);
-    mockBusinessRulesServiceConnector(status, userId, permittedStreams);
+    userStatsServiceResponse.mockResolvedValue({ data: { userId, userStreams } });
+    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
 
     const userSuccessful = await authenticationService('12345');
 
-    expect(userSuccessful).toEqual({ userId: 12345, activeStreams: 2 });
+    expect(userSuccessful).toEqual({ userId: '12345', authenticated: true });
   });
 
   test('returns error for users unable to initialize a new stream', async () => {
-    const status = 200;
-    const userId = 23456;
-    const userStreams = 3;
-    const permittedStreams = 3;
+    userId = 23456;
+    userStreams = 3;
+    permittedStreams = 3;
 
-    mockUserStatsServiceConnector(status, userId, userStreams);
-    mockBusinessRulesServiceConnector(status, userId, permittedStreams);
+    userStatsServiceResponse.mockResolvedValue({ data: { userId, userStreams } });
+    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
 
     try {
       await authenticationService('23456');
     } catch (error) {
       expect(error).toEqual(Error('Max stream limit reached'));
     }
+  });
+
+  test('calls userStatsServiceResponse and businessRulesServiceResponse with userId', async () => {
+    userId = 12345;
+    userStreams = 2;
+    permittedStreams = 3;
+
+    userStatsServiceResponse.mockResolvedValue({ data: { userId, userStreams } });
+    businessRulesServiceResponse.mockResolvedValue({ data: { userId, permittedStreams } });
+
+    await authenticationService('12345');
+
+    expect(userStatsServiceResponse).toHaveBeenCalledWith('12345');
+    expect(businessRulesServiceResponse).toHaveBeenCalledWith('12345');
   });
 });

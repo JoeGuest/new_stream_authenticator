@@ -15,10 +15,7 @@ const authenticationService = async (userId) => {
       throw new Error('Max stream limit reached');
     }
 
-    return {
-      userId: userStatsResponse.data.userId,
-      activeStreams: userStatsResponse.data.activeStreams,
-    };
+    return { userId, authenticated: true };
   } catch (error) {
     throw error;
   }
