@@ -1,5 +1,6 @@
 import request from 'supertest';
 import mockUserStatsService from '../__mocks__/mockUserStatsService';
+import mockBusinessRulesService from '../__mocks__/mockBusinessRulesService';
 
 import app from '../app';
 
@@ -8,6 +9,7 @@ describe('get /authenticate/:userId', () => {
   let status;
   let userId;
   let userStreams;
+  let permittedStreams;
 
   const authenticateRequest = () => request(app).get(`/authenticate/${userId}`);
 
@@ -16,8 +18,10 @@ describe('get /authenticate/:userId', () => {
       status = 200;
       userId = 12345;
       userStreams = 2;
+      permittedStreams = 3;
 
       mockUserStatsService(status, userId, userStreams);
+      mockBusinessRulesService(status, userId, permittedStreams);
 
       response = await authenticateRequest();
     });
@@ -41,8 +45,10 @@ describe('get /authenticate/:userId', () => {
       status = 200;
       userId = 23456;
       userStreams = 3;
+      permittedStreams = 3;
 
       mockUserStatsService(status, userId, userStreams);
+      mockBusinessRulesService(status, userId, permittedStreams);
 
       response = await authenticateRequest();
     });

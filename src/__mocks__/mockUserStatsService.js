@@ -1,10 +1,7 @@
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-
-const mockedAxios = new MockAdapter(axios);
+import sharedMockAxios from './sharedMockAxios';
 
 const mockUserStatsService = (status, userId, activeStreams) => {
-  mockedAxios.onGet(`https://userstatsservice.com/${userId}/streams`)
+  sharedMockAxios.onGet(`https://userstatsservice.com/${userId}/streams`)
     .reply(status, { userId, activeStreams });
 };
 

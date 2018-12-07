@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const authenticated = async (userId) => {
   try {
-    const userStatsResponse = await axios.get(`https://userstatsservice.com/${userId}/streams`);
+    const [userStatsResponse, businessRulesResponse] = await Promise.all([axios.get(`https://userstatsservice.com/${userId}/streams`), axios.get(`https://businessrulesservice.com/${userId}/rules`)]);
 
-    if (userStatsResponse.data.activeStreams >= 3) {
+    if (userStatsResponse.data.activeStreams >= businessRulesResponse.data.permittedStreams) {
       throw new Error('Max stream limit reached');
     }
 
