@@ -1,6 +1,6 @@
 import authenticationService from '../authenticationService';
-import mockUserStatsService from '../../__mocks__/mockUserStatsService';
-import mockBusinessRulesService from '../../__mocks__/mockBusinessRulesService';
+import mockUserStatsServiceConnector from '../../__mocks__/mockUserStatsServiceConnector';
+import mockBusinessRulesServiceConnector from '../../__mocks__/mockBusinessRulesServiceConnector';
 
 describe('authenticationService', () => {
   test('throws error for axios request failures', async () => {
@@ -19,8 +19,8 @@ describe('authenticationService', () => {
     const userStreams = 2;
     const permittedStreams = 3;
 
-    mockUserStatsService(status, userId, userStreams);
-    mockBusinessRulesService(status, userId, permittedStreams);
+    mockUserStatsServiceConnector(status, userId, userStreams);
+    mockBusinessRulesServiceConnector(status, userId, permittedStreams);
 
     const userSuccessful = await authenticationService('12345');
 
@@ -33,8 +33,8 @@ describe('authenticationService', () => {
     const userStreams = 3;
     const permittedStreams = 3;
 
-    mockUserStatsService(status, userId, userStreams);
-    mockBusinessRulesService(status, userId, permittedStreams);
+    mockUserStatsServiceConnector(status, userId, userStreams);
+    mockBusinessRulesServiceConnector(status, userId, permittedStreams);
 
     try {
       await authenticationService('23456');
