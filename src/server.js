@@ -1,5 +1,5 @@
 import app from './app';
 
-const PORT = 3000;
+const PORT = 8081;
 
 app.listen(PORT, () => console.log(`New Stream Authenticator running on port ${PORT}`));
