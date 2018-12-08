@@ -28,4 +28,17 @@ Use your web browser or favourite API tool (e.g. Postman, Paw) and call the belo
 * http://localhost:8081/authenticate/[any_other_ID] - Unsuccessful user response by calling real endpoints (that return 404s).
 
 ## Scalability / Architecture
-The authentication service has been built utilising async / await, preventing any blocking calls from occurring. The two separate API calls have been parallelised.
+The authentication service has been built utilising async / await, preventing any blocking calls from occurring. The two separate API calls to the external services have been parallelised.
+
+The app is stateless, making it easier to scale without needing to be concerned about database query bottlenecks. See examples below for two implementations:
+
+### AWS Elastic Beanstalk
+Elastic Beanstalk can deploy, monitor, manage, and scale applications for you. Some of the more useful options available are the custom Auto Scaling settings they provide, to spin up extra EC2 instances if required. There's a convenient Docker platform that allows Docker-ised images to be uploaded fairly easily (I just zipped up my project and uploaded it via their Getting Started guide).
+
+Note: Load balancing is not available on the AWS Free Tier I signed up to as part of this exercise, and the resources I have available are limited (e.g. 750 hours of EC2 t2.micro instances a month).
+
+* /authenticate/123 - User with less than 3 active streams.
+* /authenticate/987 - User with 3 active streams.
+* /authenticate/[any_other_ID] - Unsuccessful user response by calling real endpoints (that return 404s).
+
+### AWS Lambda
