@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "new_stream_authenticator-executor",
+    "name": "new_stream_authenticator",
+    "region": "eu-west-2"
+  },
+  "api": {
+    "id": "ab1leem6cg"
+  }
+}
