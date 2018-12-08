@@ -12,8 +12,13 @@
     "lint": "eslint src --fix",
     "start": "npm run build && node dist/server.js",
     "start-dev": "nodemon src/server.js --exec babel-node --",
-    "test": "jest",
+    "test": "jest --coverage",  
     "test-watch": "jest --watch"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "./dist"
+    ]
   },
   "repository": {
     "type": "git",

@@ -7,7 +7,8 @@ API that provides a simple true/false response to provided user ID
 
 1. Clone the repo and `cd` to it.
 2. Run `npm install`.
-3. Run `npm start`.
+3. Run `npm run start-dev`.
+4. Or, run `npm start` to build the app then run it from the `dist` directory.
 
 Alternately, provided you already have the docker on your machine:
 
@@ -19,6 +20,7 @@ Alternately, provided you already have the docker on your machine:
 
 1. `cd` to the root directory of this repo.
 2. Run `npm run test`.
+3. Or, run `npm run test-watch`.
 
 ## Testing instructions
 Use your web browser or favourite API tool (e.g. Postman, Paw) and call the below endpoints:
@@ -35,6 +37,8 @@ The app is stateless, making it easier to scale without needing to be concerned 
 ### AWS Elastic Beanstalk
 Elastic Beanstalk can deploy, monitor, manage, and scale applications for you. Some of the more useful options available are the custom Auto Scaling settings they provide, to spin up extra EC2 instances if required. There's a convenient Docker platform that allows Docker-ised images to be uploaded fairly easily (I just zipped up my project and uploaded it via their Getting Started guide).
 
+![AWS Elastic Beanstalk Setup](https://drive.google.com/uc?export=view&id=1jYH_-Pn-Gq-kubnYl-ZgH0DWLy8TvfPV)
+
 Note: Load balancing is not available on the AWS Free Tier I signed up to as part of this exercise, and the resources I have available are limited (e.g. 750 hours of EC2 t2.micro instances a month).
 
 * http://newstreamauthenticator-env.iqbvv7yxvj.eu-west-2.elasticbeanstalk.com/authenticate/123 - User with less than 3 active streams.
@@ -43,6 +47,9 @@ Note: Load balancing is not available on the AWS Free Tier I signed up to as par
 
 ### AWS Lambda
 Lambda is an implementation of serverless architecture. With no servers to manage, you can focus on writing the important parts of the app and not need to worry about configuring servers and setting scaling rules. Lambda uses node 8.10 (the reason I used this version for my app).
+
+![AWS API Gateway Setup](https://drive.google.com/uc?export=view&id=1Dn0E1UA8OttzoVhTtKCXXfaI-xLYAQls)
+![AWS Lambda Setup](https://drive.google.com/uc?export=view&id=1Orks6I-Q4eNDYAxNJt4-m2_AK_pXAZNe)
 
 I used a package named Claudia to convert this Express.js app to a Lambda function that sits behind API Gateway, but you could quite easily just write these functions individually rather converting an existing app like I have done. This also required me to convert it using Babel back to ES5 for uploading the Lambda function with the `create-serverless` script in package.json.
 
