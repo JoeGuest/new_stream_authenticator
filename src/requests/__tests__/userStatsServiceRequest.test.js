@@ -1,5 +1,5 @@
 import userStatsServiceRequest from '../userStatsServiceRequest';
-import mockUserStatsServiceRequest from '../../__mocks__/mockUserStatsServiceRequest';
+import mockUserStatsServiceRequest from '../__mocks__/mockUserStatsServiceRequest';
 
 describe('userStatsServiceRequest', () => {
   test('makes axios request to businessrulesservice.com with provided userId', async () => {

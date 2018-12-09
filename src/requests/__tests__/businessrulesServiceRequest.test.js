@@ -1,5 +1,5 @@
 import businessRulesServiceRequest from '../businessRulesServiceRequest';
-import mockBusinessRulesServiceRequest from '../../__mocks__/mockBusinessRulesServiceRequest';
+import mockBusinessRulesServiceRequest from '../__mocks__/mockBusinessRulesServiceRequest';
 
 describe('businessRulesServiceRequest', () => {
   test('makes axios request to businessrulesservice.com with provided userId', async () => {

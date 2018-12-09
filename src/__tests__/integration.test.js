@@ -1,6 +1,7 @@
 import request from 'supertest';
-import mockUserStatsServiceRequest from '../__mocks__/mockUserStatsServiceRequest';
-import mockBusinessRulesServiceRequest from '../__mocks__/mockBusinessRulesServiceRequest';
+import mockUserStatsServiceRequest from '../requests/__mocks__/mockUserStatsServiceRequest';
+import mockBusinessRulesServiceRequest from '../requests/__mocks__/mockBusinessRulesServiceRequest';
+import sharedMockAxios from '../requests/__mocks__/sharedMockAxios';
 
 import app from '../app';
 
@@ -14,29 +15,57 @@ describe('get /authenticate/:userId', () => {
   const authenticateRequest = () => request(app).get(`/authenticate/${userId}`);
 
   describe('user is able to authenticate new stream', () => {
-    beforeEach(async () => {
-      status = 200;
-      userId = 12345;
-      userStreams = 2;
-      permittedStreams = 3;
+    describe('when calls to services are successful', () => {
+      beforeEach(async () => {
+        status = 200;
+        userId = 12345;
+        userStreams = 2;
+        permittedStreams = 3;
 
-      mockUserStatsServiceRequest(status, userId, userStreams);
-      mockBusinessRulesServiceRequest(status, userId, permittedStreams);
+        mockUserStatsServiceRequest(status, userId, userStreams);
+        mockBusinessRulesServiceRequest(status, userId, permittedStreams);
 
-      response = await authenticateRequest();
+        response = await authenticateRequest();
+      });
+
+      afterEach(() => {
+        sharedMockAxios.reset();
+      });
+
+      test('responds with status 200', () => {
+        expect(response.statusCode).toBe(200);
+      });
+
+      test('responds with success body', () => {
+        const successBody = {
+          authenticated: true,
+          userId: '12345',
+        };
+
+        expect(response.body).toEqual(successBody);
+      });
     });
 
-    test('responds with status 200', () => {
-      expect(response.statusCode).toBe(200);
-    });
+    describe('when calls to external services are unsuccessful', () => {
+      beforeEach(async () => {
+        userId = 12345;
 
-    test('responds with success body', () => {
-      const successBody = {
-        authenticated: true,
-        userId: '12345',
-      };
+        response = await authenticateRequest();
+      });
 
-      expect(response.body).toEqual(successBody);
+      test('responds with status 200', () => {
+        expect(response.statusCode).toBe(200);
+      });
+
+      test('responds with success body', () => {
+        const successBody = {
+          authenticated: true,
+          userId: '12345',
+          errorMessage: 'Request failed with status code 404',
+        };
+
+        expect(response.body).toEqual(successBody);
+      });
     });
   });
 
@@ -51,6 +80,10 @@ describe('get /authenticate/:userId', () => {
       mockBusinessRulesServiceRequest(status, userId, permittedStreams);
 
       response = await authenticateRequest();
+    });
+
+    afterEach(() => {
+      sharedMockAxios.reset();
     });
 
     test('responds with status 401 unauthorized', () => {

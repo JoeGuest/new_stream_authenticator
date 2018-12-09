@@ -1,22 +1,9 @@
 import express from 'express';
 import authenticationService from './services/authenticationService';
+import successfulResponse from './responses/successfulResponse';
+import unsuccessfulResponse from './responses/unsuccessfulResponse';
 
 const app = express();
-
-const successfulResponse = (res, userId) => {
-  res.status(200).send({
-    authenticated: true,
-    userId,
-  });
-};
-
-const unsuccessfulResponse = (res, userId, message) => {
-  res.status(401).send({
-    authenticated: false,
-    userId,
-    message,
-  });
-};
 
 app.get('/authenticate/:userId', async (req, res) => {
   const { params: { userId } } = req;
@@ -25,7 +12,11 @@ app.get('/authenticate/:userId', async (req, res) => {
     await authenticationService(userId);
     successfulResponse(res, userId);
   } catch (error) {
-    unsuccessfulResponse(res, userId, error.message);
+    if (error.response || error.request) {
+      successfulResponse(res, userId, error.message);
+    } else {
+      unsuccessfulResponse(res, userId, error.message);
+    }
   }
 });
 

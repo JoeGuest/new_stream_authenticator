@@ -1,5 +1,5 @@
 # New Stream Authenticator
-API that provides a simple true/false response to provided user ID
+API that provides a simple true/false response to provided user ID attempting to initialise a new stream.
 
 ![New Stream Authenticator diagram](https://drive.google.com/uc?export=view&id=1USPkW4vMm49R8zqSWnDY7za2B6GbKUEl)
 
@@ -10,7 +10,7 @@ API that provides a simple true/false response to provided user ID
 3. Run `npm run start-dev`.
 4. Or, run `npm start` to build the app then run it from the `dist` directory.
 
-Alternately, provided you already have the docker on your machine:
+Alternately, provided you already have docker on your machine:
 
 1. Clone the repo and `cd` to it.
 2. Run `docker build -t new_stream_authenticator .` to build the docker image.
