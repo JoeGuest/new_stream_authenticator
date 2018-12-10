@@ -27,7 +27,7 @@ Use your web browser or favourite API tool (e.g. Postman, Paw) and call the belo
 
 * http://localhost:8081/authenticate/123 - User with less than 3 active streams.
 * http://localhost:8081/authenticate/987 - User with 3 active streams.
-* http://localhost:8081/authenticate/[any_other_ID] - Unsuccessful user response by calling real endpoints (that return 404s).
+* http://localhost:8081/authenticate/[any_other_ID] - Response by calling real endpoints (that return 404s).
 
 ## Scalability / Architecture
 The authentication service has been built utilising async / await, preventing any blocking calls from occurring. The two separate API calls to the external services have been parallelised.
@@ -43,7 +43,7 @@ Note: Load balancing is not available on the AWS Free Tier I signed up to as par
 
 * http://newstreamauthenticator-env.iqbvv7yxvj.eu-west-2.elasticbeanstalk.com/authenticate/123 - User with less than 3 active streams.
 * http://newstreamauthenticator-env.iqbvv7yxvj.eu-west-2.elasticbeanstalk.com/authenticate/987 - User with 3 active streams.
-* http://newstreamauthenticator-env.iqbvv7yxvj.eu-west-2.elasticbeanstalk.com/authenticate/[any_other_ID] - Unsuccessful user response by calling real endpoints (that return 404s).
+* http://newstreamauthenticator-env.iqbvv7yxvj.eu-west-2.elasticbeanstalk.com/authenticate/[any_other_ID] - Response by calling real endpoints (that return 404s).
 
 ### AWS Lambda
 Lambda is an implementation of serverless architecture. With no servers to manage, you can focus on writing the important parts of the app and not need to worry about configuring servers and setting scaling rules. Lambda uses node 8.10 (the reason I used this version for my app).

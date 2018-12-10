@@ -10,20 +10,16 @@ describe('authenticationService', () => {
   let userStreams;
   let permittedStreams;
 
-  test('throws error for axios request failures', async () => {
+  test('returns successful response with error message for axios failure calls', async () => {
     userId = 12345;
     permittedStreams = 3;
-
-    expect.assertions(1);
 
     userStatsServiceRequest.mockImplementation(() => { throw new Error('Request failed with status code 404'); });
     businessRulesServiceRequest.mockResolvedValue({ data: { userId, permittedStreams } });
 
-    try {
-      await authenticationService('12345');
-    } catch (error) {
-      expect(error).toEqual(Error('Request failed with status code 404'));
-    }
+    const userSuccessfulWithError = await authenticationService('12345');
+
+    expect(userSuccessfulWithError).toEqual({ userId: '12345', authenticated: true, errorMessage: 'Request failed with status code 404' });
   });
 
   test('returns successful response for users able to initialize a new stream', async () => {

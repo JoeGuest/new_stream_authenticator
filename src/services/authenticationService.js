@@ -3,10 +3,14 @@ import userStatsServiceRequest from '../requests/userStatsServiceRequest';
 import businessRulesServiceRequest from '../requests/businessRulesServiceRequest';
 
 const authenticationService = async (userId) => {
-  try {
-    let userStatsResponse;
-    let businessRulesResponse;
+  let userStatsResponse;
+  let businessRulesResponse;
+  let authenticationServiceResponse = {
+    userId,
+    authenticated: true,
+  };
 
+  try {
     [
       userStatsResponse,
       businessRulesResponse,
@@ -14,15 +18,17 @@ const authenticationService = async (userId) => {
       userStatsServiceRequest(userId),
       businessRulesServiceRequest(userId),
     ]);
-
     if (userStatsResponse.data.activeStreams >= businessRulesResponse.data.permittedStreams) {
-      throw new Error('Max stream limit reached');
+      authenticationServiceResponse.authenticated = false;
+      authenticationServiceResponse.errorMessage = 'Max stream limit reached';
     }
-
-    return { userId, authenticated: true };
   } catch (error) {
-    throw error;
+    authenticationServiceResponse.errorMessage = error.message;
+
+    return authenticationServiceResponse;
   }
+
+  return authenticationServiceResponse;
 };
 
 export default authenticationService;

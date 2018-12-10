@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "babel --presets es2015 src --out-dir dist",
+    "build": "npm install && babel --presets es2015 src --out-dir dist",
     "create-serverless": "npm run build && node_modules/.bin/claudia create --handler dist/lambda.handler --deploy-proxy-api --region eu-west-2",
     "lint": "eslint src --fix",
     "start": "npm run build && node dist/server.js",
